@@ -24,8 +24,9 @@ aws_instance.test_instance_2
 
 ```
 terraform state show aws_instance.test_instance_2  (resource type and name)
- ```
- this command will show detailed information about the "instance" in this case. You need to give the resource type.resource name as it shown in next:
+```
+
+This command will show detailed information about the "instance" in this case. You need to give the resource type.resource name as it shown in next:
  ```
 # aws_instance.test_instance_2:
 resource "aws_instance" "test_instance_2" {
