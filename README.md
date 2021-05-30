@@ -23,13 +23,13 @@ aws_instance.second_ec2
 ```
 
 ```
-terraform state show aws_instance.test_instance_2  (resource type and name)
+terraform state show aws_instance.second_ec2  (resource type and name)
 ```
 
 This command will show detailed information about the "instance" in this case. You need to give the resource type.resource name as it shown in next:
  ```
-# aws_instance.test_instance_2:
-resource "aws_instance" "test_instance_2" {
+# aws_instance.second_ec2:
+resource "aws_instance" "second_ec2" {
     ami                          = "ami-0be2609ba883822ec"
     arn                          = "arn:aws:ec2:us-east-1:974912841781:instance/i-0a88e8b8309c412c2"
     associate_public_ip_address  = true
