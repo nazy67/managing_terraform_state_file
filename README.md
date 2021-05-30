@@ -18,8 +18,8 @@ Subcommands:
 `terraform state list` - is a command which lists the resources (types of resoucres) and their names that was created and currently sitting in state file. Output from this command will be like this, in my case I have two instances:
 
 ```
-aws_instance.test_instance
-aws_instance.test_instance_2
+aws_instance.first_ec2
+aws_instance.second_ec2
 ```
 
 ```
