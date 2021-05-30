@@ -1,4 +1,4 @@
-resource "aws_security_group" "second_sg" {
+resource "aws_security_group" "sg_for_ec2" {
   name        = "allow_22_80"
   description = "Allow TLS inbound traffic"
 
