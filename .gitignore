@@ -1,0 +1,4 @@
+Ignore the following list of files below:
+
+*terraform*
+*.terraform*
