@@ -171,6 +171,13 @@ Removed aws_instance.second_ec2
 Successfully removed 1 resource instance(s).
 ```
 
+You can check the content of the state file by running `terraform state list` command:
+
+```
+aws_instance.first_ec2
+aws_security_group.sg_for_ec2
+```
+
 Terraform state file after removing second_ec2, as you can see that instead of second ec2 we have description of security group now:
 
 <img src="images/tf_state_after.png" alt="aws" width="800" height="500">
