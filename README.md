@@ -97,7 +97,7 @@ resource "aws_instance" "second_ec2" {
 }
 ```
 
-The next command is not the terraform state subcommand but it's very useful to when managing state file in terraform.  `terraform taint` is a command that will `taint` or `untaint` the resources in my case an `instance` that is in state file. This command manually marks a Terraform-managed resource as tainted, forcing it to be destroyed and recreated on the next apply. This command will not modify infrastructure, but does modify the state file in order to mark a resource as tainted. Generally if we run,
+The next command is not the terraform state subcommand but it's very useful for managing state file in terraform, `terraform taint` is a command that will `taint` or `untaint` the resources in my case an `instance` that is in state file. This command manually marks a Terraform-managed resource as tainted, forcing it to be destroyed and recreated on the next apply. This command will not modify infrastructure, but does modify the state file in order to mark a resource as tainted. Generally if we run,
 
 ```
 terraform tain aws_instance.second_ec2
@@ -109,7 +109,7 @@ output from this command will be:
 Resource instance aws_instance.second_ec2 has been marked as tainted.
 ```
 
-After that we run `terraform init`, it will initializes terraform again and when we run terraform plan, it will show that our `second_ec2` instance will be destroyed and a new instance will be created.
+After that we run `terraform plan` it will show that our `second_ec2` instance will be destroyed and a new instance will be created.
 
 ```
 An execution plan has been generated and is shown below.
@@ -142,18 +142,17 @@ and if we run `terraform plan` again it will show the next output:
 ```
 No changes. Infrastructure is up-to-date.
 
-This means that Terraform did not detect any differences between your
-configuration and real physical resources that exist. As a result, no
-actions need to be performed.
+This means that Terraform did not detect any differences between your configuration and real physical resources that exist. As a result, no actions need to be performed.
 ```
 
-The next command is ```terraform state rm```:
+The next command is `terraform state rm` it works the same way as the other terraform state subcommands, which are refering to the objects (resources) in the state file.
 
 ```
-terraform state rm aws_instance.test_instance
+terraform state rm aws_instance.second_ec2
 ```
-It works the same way as the other commands which were refering to the objects (resources) in the state file. When you run ```terraform state rm aws_instance.test_instance``` it will get deleted from the state file and terraform has no idea that the first instance was ever created, is not physically destroyed from AWS. But if we run ```terraform plan``` it will say that new instance will get created as it is shown in our configurations (template). So that instance which teffaform is not aware of will be still up and running, always run command ```terraform plan``` to make sure what you are doing by running that command. There are various use cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
-The next command is terraform move, what is does is moves one resource to another: 
+ When you run `terraform state rm aws_instance.test_instance` it will get deleted from the state file and terraform has no idea that the first instance was ever created, is not physically destroyed from AWS. But if we run ```terraform plan``` it will say that new instance will get created as it is shown in our configurations (template). So that instance which teffaform is not aware of will be still up and running, always run command `terraform plan` to make sure what you are doing by running that command. There are various use cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
+
+The next command is `terraform state move`, what is does is moves one resource to another: 
 ```
 terraform state mv aws_instance.test_instance_2 aws_instance.move_to_me
 ```
