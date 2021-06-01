@@ -22,7 +22,7 @@ Subcommands:
     show                Show a resource in the state
 ```
 
-`terraform state list` - is a command which lists all the resources (types of resources) and their names, that was created and currently sitting in state file. Output from this command will be like this, in my case I have two instances and security group:
+[`terraform state list`](https://www.terraform.io/docs/cli/commands/state/list.html) - is a command which lists all the resources (types of resources) and their names, that was created and currently sitting in state file. Output from this command will be like this, in my case I have two instances and security group:
 
 ```
 aws_instance.first_ec2
@@ -30,7 +30,7 @@ aws_instance.second_ec2
 aws_security_group.sg_for_ec2
 ```
 
-If you would like to see detailed information about particular resource `terraform state show` is the command, in my case I'm pulling info about my ec2 instance.
+If you would like to see detailed information about particular resource [`terraform state show`](https://www.terraform.io/docs/cli/commands/state/show.html) is the command, in my case I'm pulling info about my ec2 instance.
 
 ```
 terraform state show aws_instance.second_ec2  (resource type and name)
@@ -104,7 +104,7 @@ resource "aws_instance" "second_ec2" {
 }
 ```
 
-The next command is not the terraform state subcommand but it's very useful for managing state file in terraform, `terraform taint` is a command that will `taint` or `untaint` the resources in my case an `instance` that is in state file. This command manually marks a Terraform-managed resource as tainted, forcing it to be destroyed and recreated on the next apply. This command will not modify infrastructure, but does modify the state file in order to mark a resource as tainted. Generally if we run,
+The next command is not the terraform state subcommand but it's very useful for managing state file in terraform, [`terraform taint`](https://www.terraform.io/docs/cli/commands/taint.html) is a command that will `taint` or `untaint` the resources in my case an `instance` that is in state file. This command manually marks a Terraform-managed resource as tainted, forcing it to be destroyed and recreated on the next apply. This command will not modify infrastructure, but does modify the state file in order to mark a resource as tainted. Generally if we run,
 
 ```
 terraform tain aws_instance.second_ec2
@@ -152,7 +152,7 @@ No changes. Infrastructure is up-to-date.
 This means that Terraform did not detect any differences between your configuration and real physical resources that exist. As a result, no actions need to be performed.
 ```
 
-The next command is `terraform state rm` it works the same way as the other terraform state subcommands, which are refering to the objects (resources) in the state file.
+The next command is [`terraform state rm`](https://www.terraform.io/docs/cli/commands/state/rm.html) it works the same way as the other terraform state subcommands, which are refering to the objects (resources) in the state file.
 
 Before we run command below terraform state file contains seconc_ec2:
 
@@ -203,11 +203,11 @@ Terraform will perform the following actions:
 
 When you run terraform apply it will create another instance with the same name, but be careful with s3 bucket name, you will get an error because you can't create s3 bucket with the same name on AWS (the name has to be unique).
 
-<img src="images/aws_console_after.png" alt="aws" width="470" height="90">
+<img src="images/aws_console_after.png" alt="aws" width="500" height="100">
 
 There are various used cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
 
-The next command is `terraform state mv`, what it does is moves one resource to another. Before you do anything run command terraform state list you should get the following output:
+The next command is [`terraform state mv`](https://www.terraform.io/docs/cli/commands/state/mv.html), what it does is moves one resource to another. Before you do anything run command terraform state list you should get the following output:
 
 ```
 aws_instance.first_ec2
@@ -239,15 +239,27 @@ terraform state file:
 
 Since both resources (instances) have the same configurations terraform just renamed the `aws_instance.first_ec2` to `aws_instance.new_ec2`. That is how we move one resource to another using terraform state mv.
 
-`terraform state pull` command will output the content of your state file. 
+The [`terraform state pull`](https://www.terraform.io/docs/cli/commands/state/pull.html) command is used to manually download and output the state from remote state. This command also works with local state. `terraform state pull` command will output the content of your state file. This is useful for reading values out of state (potentially pairing this command with something like jq). It is also useful if you need to make manual modifications to state.
 
-The next command is `terraform refresh` this command will compare the state file and the infrastructure in real world and can detect if there any changes were done. This command does not modify infrastructure, but does modifies the state file. If state file is changed it will occure in the next `terraform apply`.
+The [`terraform state push`](https://www.terraform.io/docs/cli/commands/state/push.html) command is used to manually upload a local state file to remote state. This command also works with local state. This command should rarely be used. It is meant only as a utility in case manual intervention is necessary with the remote state. This command will push the state specified by PATH to the currently configured backend. Usage:
 
-```terraform validate``` will go and check your configurations and makes sure it's valid, if it is not it give an error by saying this part wasn't configured right.It is a good practice to run this command to check while you are writing your  code, really helpfultf command, takes just a few seconds to run. 
+```
+terraform state push [options] PATH
+```
 
-```terraform fmt``` command will will make sure your code (configurations) are well formated by hashi corp standards.
+The [`terraform state replace-provider`](https://www.terraform.io/docs/cli/commands/state/replace-provider.html) command is used to replace the provider for resources in a Terraform state. This command will update all resources using the "from" provider, setting the provider to the specified "to" provider. This allows changing the source of a provider which currently has resources in state. This command will output a backup copy of the state prior to saving any changes. The backup cannot be disabled. Due to the destructive nature of this command, backups are required. Usage: 
 
-```terraform import``` will import existing resources into terraform.To copy a module you need to run the next command:
+```
+terraform state replace-provider [options] FROM_PROVIDER_FQN TO_PROVIDER_FQN
+```
+
+The next command is [`terraform refresh`](https://www.terraform.io/docs/cli/commands/refresh.html) this command will compare the state file and the infrastructure in real world and can detect if there any changes were done. This command does not modify infrastructure, but does modifies the state file. If state file is changed it will occure in the next `terraform apply`.
+
+[`terraform validate`](https://www.terraform.io/docs/cli/commands/validate.html) will go and check your configurations and makes sure it's valid, if not it gives an error by saying this part of your configurtion file wasn't configured right, it checks whether a configuration is syntactically valid and internally consistent. It is a good practice to run this command to check while you are writing your code, really helpful terraform command, takes just a few seconds to run. 
+
+[`terraform fmt`](https://www.terraform.io/docs/cli/commands/fmt.html) command will will make sure your code (configurations) are well formated by hashi corp standards.
+
+[`terraform import`](https://www.terraform.io/docs/cli/commands/import.html) will import existing resources into terraform.To copy a module you need to run the next command:
 ```
 terraform import module.my-ec2.aws_instance.ec2-instance i-0a0c9cd872cb1a200. # module.modules_name.resource_type.resource_name followed by resource ID
 ```
@@ -259,11 +271,3 @@ For the s3 bucket it looks like this"
 ```
 terraform import aws_s3_bucket.bucket bucket-name
 ```
-
-### Useful links
-
-[Command: taint](https://www.terraform.io/docs/cli/commands/taint.html)
-
-[State Command](https://www.terraform.io/docs/cli/commands/state/index.html)
-
-[]()
