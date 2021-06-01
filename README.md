@@ -180,11 +180,11 @@ aws_security_group.sg_for_ec2
 
 Terraform state file after removing second_ec2, as you can see that instead of second ec2 we have description of security group now:
 
-<img src="images/tf_state_after.png" alt="aws" width="800" height="500">
+<img src="images/tf_state_after.png" alt="aws" width="700" height="350">
 
 But terraform has no idea that second_ec2 instance was ever created, is not physically destroyed from AWS, we can see it on AWS console:
 
-<img src="images/aws_console.png" alt="aws" width="800" height="500">
+<img src="images/aws_console.png" alt="aws" width="400" height="90">
 
 But if we run `terraform plan` it will say that new instance will be created as it is shown in our configurations file (template). So that `second_ec2` instance which terraform is not aware of will be still up and running, always run command `terraform plan` to make sure what changes terraform  will make. 
 ```
@@ -203,7 +203,7 @@ Terraform will perform the following actions:
 
 When you run terraform apply it will create another instance with the same name, but be careful with s3 bucket name, you will get an error because you can't create s3 bucket with the same name on AWS (the name has to be unique).
 
-<img src="images/aws_console_after.png" alt="aws" width="800" height="500">
+<img src="images/aws_console_after.png" alt="aws" width="400" height="90">
 
 There are various used cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
 
