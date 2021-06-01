@@ -28,14 +28,13 @@ If you would like to see detailed information about particular resource `terrafo
 ```
 terraform state show aws_instance.second_ec2  (resource type and name)
 ```
-
-Here in addition to `terraform state show` you need to give the `resource type.resource name` as it shown above and the output will be next:
+As you see here in addition to `terraform state show` I'm giving also `resource type.resource name` as it shown above and I'm getting the next output:
 
 ```
 # aws_instance.second_ec2:
 resource "aws_instance" "second_ec2" {
     ami                          = "ami-0be2609ba883822ec"
-    arn                          = "arn:aws:ec2:us-east-1:974912841781:instance/i-0a88e8b8309c412c2"
+    arn                          = "arn:aws:ec2:us-east-1:974912841781:instance/i-0d617f50de9b6b0c7"
     associate_public_ip_address  = true
     availability_zone            = "us-east-1d"
     cpu_core_count               = 1
@@ -44,29 +43,30 @@ resource "aws_instance" "second_ec2" {
     ebs_optimized                = false
     get_password_data            = false
     hibernation                  = false
-    id                           = "i-0a88e8b8309c412c2"
+    id                           = "i-0d617f50de9b6b0c7"
     instance_state               = "running"
     instance_type                = "t2.micro"
     ipv6_address_count           = 0
     ipv6_addresses               = []
     monitoring                   = false
-    primary_network_interface_id = "eni-08a7e28271dd24db2"
-    private_dns                  = "ip-172-31-92-93.ec2.internal"
-    private_ip                   = "172.31.92.93"
-    public_dns                   = "ec2-54-144-177-15.compute-1.amazonaws.com"
-    public_ip                    = "54.144.177.15"
+    primary_network_interface_id = "eni-03d0ba050c812f890"
+    private_dns                  = "ip-172-31-91-109.ec2.internal"
+    private_ip                   = "172.31.91.109"
+    public_dns                   = "ec2-54-84-53-33.compute-1.amazonaws.com"
+    public_ip                    = "54.84.53.33"
     secondary_private_ips        = []
     security_groups              = [
-        "default",
+        "allow_22_80",
     ]
     source_dest_check            = true
     subnet_id                    = "subnet-ebc366ca"
     tags                         = {
-        "Name" = "second"
+        "Environment" = "dev"
+        "Name"        = "webserver_2"
     }
     tenancy                      = "default"
     vpc_security_group_ids       = [
-        "sg-5edf9167",
+        "sg-0f5102957b67477f3",
     ]
 
     credit_specification {
@@ -90,7 +90,7 @@ resource "aws_instance" "second_ec2" {
         iops                  = 100
         tags                  = {}
         throughput            = 0
-        volume_id             = "vol-0165edeadb9b51cf9"
+        volume_id             = "vol-0c74da5c4f8f1dacd"
         volume_size           = 8
         volume_type           = "gp2"
     }
