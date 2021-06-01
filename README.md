@@ -154,11 +154,51 @@ This means that Terraform did not detect any differences between your configurat
 
 The next command is `terraform state rm` it works the same way as the other terraform state subcommands, which are refering to the objects (resources) in the state file.
 
+Before we run command below terraform state file contains seconc_ec2:
+
+<img src="images/tf_state.png" alt="aws" width="800" height="500">
+
+Then we run terraform state rm command which will remove second_ec2.
+
 ```
 terraform state rm aws_instance.second_ec2
 ```
 
-After running command above `second_ec2` instance will br deleted from the state file and terraform has no idea that the that instance was ever created, is not physically destroyed from AWS. But if we run `terraform plan` it will say that new instance will get created as it is shown in our configurations (template). So that instance which terraform is not aware of will be still up and running, always run command `terraform plan` to make sure what changes terraform  will make. There are various use cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
+After running command above `second_ec2` instance will be deleted from the state file and output from that command will look like this:
+
+```
+Removed aws_instance.second_ec2
+Successfully removed 1 resource instance(s).
+```
+
+Terraform state file after removing second_ec2, as you can see that instead of second ec2 we have description of security group now:
+
+<img src="images/tf_state_after.png" alt="aws" width="800" height="500">
+
+But terraform has no idea that second_ec2 instance was ever created, is not physically destroyed from AWS, we can see it on AWS console:
+
+<img src="images/aws_console.png" alt="aws" width="800" height="500">
+
+But if we run `terraform plan` it will say that new instance will be created as it is shown in our configurations file (template). So that `second_ec2` instance which terraform is not aware of will be still up and running, always run command `terraform plan` to make sure what changes terraform  will make. 
+```
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_instance.second_ec2 will be created
+  + resource "aws_instance" "second_ec2" {
+      + ami                          = "ami-0be2609ba883822ec"
+      ........
+  Plan: 1 to add, 0 to change, 0 to destroy.     
+```
+
+When you run terraform apply it will create another instance with the same name, but be careful with s3 bucket name, you will get an error because you can't create s3 bucket with the same name on AWS (the name has to be unique).
+
+<img src="images/aws_console_after.png" alt="aws" width="800" height="500">
+
+There are various used cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
 
 The next command is `terraform state move`, what is does is moves one resource to another: 
 ```
