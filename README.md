@@ -1,8 +1,15 @@
 # Managing terraform state file. Terraform state subcommands.
 
+### Resources:
+
+- Terraform version 0.14
+- AWS account
+
+## Description
+
 Terraform has lots of commands which you want to be familiar with if you want to use Terraform, and detailed description is given in the next link [alphabetical list of commands](https://www.terraform.io/docs/cli/commands/import.html)
 
-But when you work with Terraform state file there's a specific list of subcommands that you can see after running `terraform state` command that you can use with terraform state. This command has subcommands for advanced state management. These subcommands can be used to slice and dice the Terraform state. This is sometimes necessary in advanced cases. For your safety, allstate management commands that modify the state create a timestamped backup of the state prior to making modifications.
+But when you work with Terraform state file there's a specific list of subcommands that you can see after running `terraform state` command that you can use with terraform state. The Terraform state subcommands all work with remote state just as if it was local state. This command has subcommands for advanced state management. These subcommands can be used to slice and dice the Terraform state. This is sometimes necessary in advanced cases. For your safety, allstate management commands that modify the state create a timestamped backup of the state prior to making modifications.
 
 ```
 Subcommands:
@@ -150,7 +157,8 @@ The next command is `terraform state rm` it works the same way as the other terr
 ```
 terraform state rm aws_instance.second_ec2
 ```
- When you run `terraform state rm aws_instance.test_instance` it will get deleted from the state file and terraform has no idea that the first instance was ever created, is not physically destroyed from AWS. But if we run ```terraform plan``` it will say that new instance will get created as it is shown in our configurations (template). So that instance which teffaform is not aware of will be still up and running, always run command `terraform plan` to make sure what you are doing by running that command. There are various use cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
+
+After running command above `second_ec2` instance will br deleted from the state file and terraform has no idea that the that instance was ever created, is not physically destroyed from AWS. But if we run `terraform plan` it will say that new instance will get created as it is shown in our configurations (template). So that instance which terraform is not aware of will be still up and running, always run command `terraform plan` to make sure what changes terraform  will make. There are various use cases for removing items from a Terraform state file. The most common is refactoring a configuration to no longer manage that resource (perhaps moving it to another Terraform configuration/state).
 
 The next command is `terraform state move`, what is does is moves one resource to another: 
 ```
@@ -184,3 +192,11 @@ For the s3 bucket it looks like this"
 ```
 terraform import aws_s3_bucket.bucket bucket-name
 ```
+
+### Useful links
+
+[Command: taint](https://www.terraform.io/docs/cli/commands/taint.html)
+
+[State Command](https://www.terraform.io/docs/cli/commands/state/index.html)
+
+[]()
