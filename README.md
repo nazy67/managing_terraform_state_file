@@ -1,8 +1,8 @@
-# Managing terraform state file. Terraform state commands.
+# Managing terraform state file. Terraform state subcommands.
 
 Terraform has lots of commands which you want to be familiar with if you want to use Terraform, and detailed description is given in the next link [alphabetical list of commands](https://www.terraform.io/docs/cli/commands/import.html)
 
-But when you work with Terraform state file there's a specific list of subcommands that you can see after running `terraform state` command that you can use with terraform state:
+But when you work with Terraform state file there's a specific list of subcommands that you can see after running `terraform state` command that you can use with terraform state. This command has subcommands for advanced state management. These subcommands can be used to slice and dice the Terraform state. This is sometimes necessary in advanced cases. For your safety, allstate management commands that modify the state create a timestamped backup of the state prior to making modifications.
 
 ```
 Subcommands:
@@ -95,17 +95,58 @@ resource "aws_instance" "second_ec2" {
         volume_type           = "gp2"
     }
 }
- ```
-The next command  will taint/untaint the instances that are in the state file. The ```terraform taint``` command manually marks a Terraform-managed resource as tainted, forcing it to be destroyed and recreated on the next apply. This command will not modify infrastructure, but does modify the state file in order to mark a resource as tainted. Generally if we run ```tefform tain aws_instance.test_instance``` it will tain that resourcse and we run terraform init , it will initializes again and when we run terraform plan, it will show that our first instance will be desroyed and a new instance will be created. But we can easily untain the resource by running ```terraform untaint aws_instance.test_instance``` and if we run ```terraform plan``` it will say that evything is up to date.
+```
+
+The next command is not the terraform state subcommand but it's very useful to when managing state file in terraform.  `terraform taint` is a command that will `taint` or `untaint` the resources in my case an `instance` that is in state file. This command manually marks a Terraform-managed resource as tainted, forcing it to be destroyed and recreated on the next apply. This command will not modify infrastructure, but does modify the state file in order to mark a resource as tainted. Generally if we run,
 
 ```
-terraform taint/untaint resourcetype.resourcename (aws_instance.test_instance)
-```
-Output from running command above will be:
+terraform tain aws_instance.second_ec2
+``` 
+
+output from this command will be:
 
 ```
-Resource instance aws_instance.test_instance has been marked as tainted. 
+Resource instance aws_instance.second_ec2 has been marked as tainted.
 ```
+
+After that we run `terraform init`, it will initializes terraform again and when we run terraform plan, it will show that our `second_ec2` instance will be destroyed and a new instance will be created.
+
+```
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+-/+ destroy and then create replacement
+
+Terraform will perform the following actions:
+
+  # aws_instance.second_ec2 is tainted, so must be replaced
+-/+ resource "aws_instance" "second_ec2" {
+      ~ arn                          = "arn:aws:ec2:us-east-1:974912841781:instance/i-0d617f50de9b6b0c7" -> (known after apply)
+      ....................
+
+Plan: 1 to add, 0 to change, 1 to destroy.      
+```
+
+But we can easily untain the resource by running,
+
+```
+terraform untaint aws_instance.second_ec2
+```
+
+Output from the command:
+```
+Resource instance aws_instance.second_ec2 has been successfully untainted.
+```
+
+and if we run `terraform plan` again it will show the next output:
+
+```
+No changes. Infrastructure is up-to-date.
+
+This means that Terraform did not detect any differences between your
+configuration and real physical resources that exist. As a result, no
+actions need to be performed.
+```
+
 The next command is ```terraform state rm```:
 
 ```
