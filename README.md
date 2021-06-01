@@ -23,12 +23,15 @@ aws_instance.second_ec2
 aws_security_group.sg_for_ec2
 ```
 
+If you would like to see detailed information about particular resource `terraform state show` is the command, in my case I'm pulling info about my ec2 instance.
+
 ```
 terraform state show aws_instance.second_ec2  (resource type and name)
 ```
 
-This command will show detailed information about the "instance" in this case. You need to give the resource type.resource name as it shown in next:
- ```
+Here in addition to `terraform state show` you need to give the `resource type.resource name` as it shown above and the output will be next:
+
+```
 # aws_instance.second_ec2:
 resource "aws_instance" "second_ec2" {
     ami                          = "ami-0be2609ba883822ec"
