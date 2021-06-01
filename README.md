@@ -1,6 +1,6 @@
 # Managing terraform state file. Terraform state commands.
 
-Terraform has lots of commands which you want to be familiar with if you want to use Terraform, and detailed descrition is given in the next link [alphabetical list of commands](https://www.terraform.io/docs/cli/commands/import.html)
+Terraform has lots of commands which you want to be familiar with if you want to use Terraform, and detailed description is given in the next link [alphabetical list of commands](https://www.terraform.io/docs/cli/commands/import.html)
 
 But when you work with Terraform state file there's a specific list of subcommands that you can see after running `terraform state` command that you can use with terraform state:
 
@@ -15,11 +15,12 @@ Subcommands:
     show                Show a resource in the state
 ```
 
-`terraform state list` - is a command which lists the resources (types of resoucres) and their names that was created and currently sitting in state file. Output from this command will be like this, in my case I have two instances:
+`terraform state list` - is a command which lists all the resources (types of resources) and their names, that was created and currently sitting in state file. Output from this command will be like this, in my case I have two instances and security group:
 
 ```
 aws_instance.first_ec2
 aws_instance.second_ec2
+aws_security_group.sg_for_ec2
 ```
 
 ```
