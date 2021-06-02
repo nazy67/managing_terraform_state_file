@@ -41,7 +41,7 @@ As you see here in addition to `terraform state show` I'm giving also `resource 
 # aws_instance.second_ec2:
 resource "aws_instance" "second_ec2" {
     ami                          = "ami-0be2609ba883822ec"
-    arn                          = "arn:aws:ec2:us-east-1:974912841781:instance/i-0d617f50de9b6b0c7"
+    arn                          = "arn:aws:ec2:us-east-1:900000000001:instance/i-0d617f50de9b6b0c7"
     associate_public_ip_address  = true
     availability_zone            = "us-east-1d"
     cpu_core_count               = 1
@@ -127,7 +127,7 @@ Terraform will perform the following actions:
 
   # aws_instance.second_ec2 is tainted, so must be replaced
 -/+ resource "aws_instance" "second_ec2" {
-      ~ arn                          = "arn:aws:ec2:us-east-1:974912841781:instance/i-0d617f50de9b6b0c7" -> (known after apply)
+      ~ arn                          = "arn:aws:ec2:us-east-1:900000000001:instance/i-0d617f50de9b6b0c7" -> (known after apply)
       ....................
 
 Plan: 1 to add, 0 to change, 1 to destroy.      
