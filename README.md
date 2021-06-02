@@ -259,15 +259,65 @@ The next command is [`terraform refresh`](https://www.terraform.io/docs/cli/comm
 
 [`terraform fmt`](https://www.terraform.io/docs/cli/commands/fmt.html) command will will make sure your code (configurations) are well formated by hashi corp standards.
 
-[`terraform import`](https://www.terraform.io/docs/cli/commands/import.html) will import existing resources into terraform.To copy a module you need to run the next command:
+[`terraform import`](https://www.terraform.io/docs/cli/commands/import.html) will import existing resources into terraform configuration file. Usage:
+
 ```
-terraform import module.my-ec2.aws_instance.ec2-instance i-0a0c9cd872cb1a200. # module.modules_name.resource_type.resource_name followed by resource ID
+terraform import [options] ADDRESS ID
 ```
-To import an ec2 it will look like this:
+
+In my case I would like to import an existing ec2 instance, but before I import that resource I have to create configuration file for that resource, otherwise it will give an error such as:
+
 ```
-terraform import aws_instance.my-ec2 i-0a0c9cd872cb1a200 # resource_type.resource_name followed by resource ID.
+Error: resource address "aws_instance.new_ec2" does not exist in the configuration.
+
+Before importing this resource, please create its configuration in the root module. For example:
+
+resource "aws_instance" "new_ec2" {
+  # (resource arguments)
+}
 ```
-For the s3 bucket it looks like this"
+After that run the next command:
+
+```
+terraform import aws_instance.new_ec2  i-05c5a907a0cbf2298 
+# resource_type.resource_name followed by resource ID.
+```
+
+Output from the command above is:
+
+```
+aws_instance.new_ec2: Importing from ID "i-05c5a907a0cbf2298"...
+aws_instance.new_ec2: Import prepared!
+  Prepared aws_instance for import
+aws_instance.new_ec2: Refreshing state... [id=i-05c5a907a0cbf2298]
+
+Import successful!
+
+The resources that were imported are shown above. These resources are now in
+your Terraform state and will henceforth be managed by Terraform.
+```
+
+To import a `module` you need to run the next command.
+
+```
+terraform import module.new_ec2.aws_instance.ec2-instance i-05c5a907a0cbf2298
+# module.modules_name.resource_type.resource_name followed by resource ID
+```
+
+To import an aws_instance resource named new_ec2 configured with `count`:
+
+```
+terraform import 'aws_instance.new_ec2[0]' i-05c5a907a0cbf2298
+```
+
+To import an aws_instance into the "example" instance of the aws_instance resource named new_ec2 configured with `for_each`:
+
+```
+terraform import 'aws_instance.new_ec2["example"]' i-05c5a907a0cbf2298
+```
+
+For the s3 bucket it looks like this:
+
 ```
 terraform import aws_s3_bucket.bucket bucket-name
 ```
